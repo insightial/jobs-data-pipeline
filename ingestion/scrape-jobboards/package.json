@@ -1,0 +1,40 @@
+{
+  "name": "@insightial/scrape-jobboards",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "setup": "yarn db:sync && yarn db:generate",
+    "clean": "rm -rf ./dist",
+    "build:layer": "bash ./scripts/build.layer.sh",
+    "build:lambda": "bash ./scripts/build.lambda.sh",
+    "build": "yarn clean && yarn build:lambda && yarn build:layer",
+    "deploy:layer": "bash ./scripts/deploy.layer.sh",
+    "deploy:lambda": "bash ./scripts/deploy.lambda.sh",
+    "deploy": "yarn clean && yarn build && yarn deploy:lambda && yarn deploy:layer",
+    "db:sync": "yarn workspace @insightial/job-prisma-schema sync",
+    "db:seed": "yarn workspace @insightial/job-prisma-schema seed",
+    "db:clear": "yarn workspace @insightial/job-prisma-schema clear",
+    "db:dev": "yarn workspace @insightial/job-prisma-schema dev",
+    "db:dev-create": "yarn workspace @insightial/job-prisma-schema dev-create",
+    "db:reset": "yarn workspace @insightial/job-prisma-schema reset",
+    "db:generate": "yarn workspace @insightial/job-prisma-schema generate",
+    "db:format": "yarn workspace @insightial/job-prisma-schema format",
+    "db:migrate": "yarn workspace @insightial/job-prisma-schema migrate"
+  },
+  "dependencies": {
+    "@aws-sdk/client-lambda": "^3.637.0",
+    "@insightial/job-aws": "*",
+    "@insightial/job-prisma-schema": "*",
+    "@insightial/job-types": "*",
+    "aws-lambda": "^1.0.7",
+    "aws-sdk": "^2.1690.0",
+    "axios": "^1.7.7"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.145",
+    "@types/node": "^22.5.3",
+    "dotenv": "^16.4.5",
+    "esbuild": "^0.23.1"
+  }
+}
