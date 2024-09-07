@@ -1,0 +1,16 @@
+{
+  "name": "@insightial/job-aws",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "yarn clean && tsc",
+    "build:only": "tsc",
+    "clean": "rm -rf ./dist",
+    "watch": "tsc -w"
+  },
+  "main": "dist/index.js",
+  "dependencies": {
+    "aws-sdk": "^2.1688.0"
+  }
+}
