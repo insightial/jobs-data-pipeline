@@ -1,0 +1,26 @@
+{
+  "name": "@insightial/scrape-jobboards-scheduler",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "setup": "yarn",
+    "clean": "rm -rf ./dist",
+    "build:layer": "bash ./scripts/build.layer.sh",
+    "build:lambda": "bash ./scripts/build.lambda.sh",
+    "build": "yarn clean && yarn build:lambda && yarn build:layer",
+    "deploy:layer": "bash ./scripts/deploy.layer.sh",
+    "deploy:lambda": "bash ./scripts/deploy.lambda.sh",
+    "deploy": "yarn clean && yarn build && yarn deploy:lambda && yarn deploy:layer"
+  },
+  "dependencies": {
+    "@insightial/job-aws": "*",
+    "@insightial/job-types": "*",
+    "aws-sdk": "^2.1688.0",
+    "date-fns": "^3.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.4",
+    "esbuild": "^0.23.1"
+  }
+}
