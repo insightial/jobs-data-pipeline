@@ -1,0 +1,30 @@
+{
+  "name": "jobs-data-pipeline",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "you@insightial.com",
+  "dependencies": {
+    "aws-sdk": "^2.1688.0"
+  },
+  "devDependencies": {
+    "@types/aws-sdk": "^2.7.0",
+    "@types/node": "20.10.5",
+    "ts-node": "^10.9.2",
+    "typescript": "5.2.2"
+  },
+  "workspaces": [
+    "ingestion/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "setup": "yarn workspaces foreach --all install",
+    "setup:ingestion": "yarn workspaces foreach --all --include \"ingestion/*\" run setup",
+    "build:ingestion": "yarn workspaces foreach --all --include \"ingestion/*\" run build",
+    "deploy:ingestion": "yarn workspaces foreach --all --include \"ingestion/*\" run deploy",
+    "generate:prisma": "yarn workspace @insightial/job-prisma-schema generate",
+    "build:prisma": "yarn workspace @insightial/job-prisma-schema build",
+    "build:packages": "yarn workspaces foreach --all --include \"packages/*\" run build"
+  },
+  "packageManager": "yarn@4.4.1"
+}
