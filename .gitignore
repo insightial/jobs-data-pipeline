@@ -1,0 +1,24 @@
+# Environment Files
+.env
+
+# Python Virtual Environment
+.venv
+venv
+
+# Local files
+*.Local
+
+# Python cache
+__pycache__
+
+# Node Modukes
+node_modules
+
+# Distribution Folder
+dist/
+
+# Compressed files
+*.zip
+
+# DS Store
+.DS_Store
