@@ -1,0 +1,29 @@
+{
+  "name": "@insightial/job-prisma-schema",
+  "version": "1.0.0",
+  "description": "This module is used to manage job listing aurora cluster instance on aws, using prisma orm",
+  "scripts": {
+    "prisma": "prisma",
+    "setup": "yarn run sync && yarn build",
+    "seed": "prisma db seed",
+    "sync": "prisma db push",
+    "clear": "prisma db push --force-reset",
+    "dev": "prisma migrate dev",
+    "dev-create": "prisma migrate dev --create-only",
+    "reset": "prisma migrate reset",
+    "generate": "prisma generate",
+    "format": "prisma format",
+    "migrate": "prisma migrate deploy",
+    "clean": "rm -rf ./dist",
+    "build": "yarn generate && yarn clean && tsc"
+  },
+  "main": "dist/index.js",
+  "keywords": [],
+  "author": "you@insightial.com",
+  "dependencies": {
+    "@prisma/client": "5.17.0",
+    "aws-sdk": "^2.1687.0",
+    "pg": "^8.12.0",
+    "prisma": "5.17.0"
+  }
+}
