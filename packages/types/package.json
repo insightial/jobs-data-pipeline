@@ -1,0 +1,13 @@
+{
+  "name": "@insightial/job-types",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "yarn clean && tsc",
+    "build:only": "tsc",
+    "clean": "rm -rf ./dist",
+    "watch": "tsc -w"
+  },
+  "main": "dist/index.js"
+}
