@@ -24,3 +24,65 @@ model JobBoard {
 
   @@id([provider, name])
 }
+
+model GreenhouseOffice {
+  id          Int                    @id
+  name        String
+  departments GreenhouseDepartment[] @relation("DepartmentOffice")
+  child_ids   GreenhouseOffice[]     @relation("children")
+  parent      GreenhouseOffice?      @relation("children", fields: [parent_id], references: [id])
+  parent_id   Int?
+}
+
+model GreenhouseDepartment {
+  id        Int                    @id
+  name      String
+  offices   GreenhouseOffice[]     @relation("DepartmentOffice")
+  jobs      GreenhouseJob[]        @relation("DepartmentJobs")
+  child_ids GreenhouseDepartment[] @relation("children")
+  parent    GreenhouseDepartment?  @relation("children", fields: [parent_id], references: [id])
+  parent_id Int?
+}
+
+model GreenhouseJob {
+  id                   Int                    @id
+  title                String
+  updatedAt            DateTime
+  absoluteUrl          String
+  internalJobId        Int?
+  location             GreenhouseLocation?    @relation(fields: [locationId], references: [id])
+  locationId           Int?                   @unique
+  departments          GreenhouseDepartment[] @relation("DepartmentJobs")
+  questions            GreenhouseQuestion[]   @relation("JobQuestions")
+  location_questions   GreenhouseQuestion[]   @relation("JobLocationQuestions")
+  greenhousePayRangeId Int?                   @unique
+  payRanges            GreenhousePayRange?    @relation(fields: [greenhousePayRangeId], references: [id])
+  metadata             Json?
+}
+
+model GreenhouseLocation {
+  id   Int            @id @default(autoincrement())
+  job  GreenhouseJob?
+  name String
+}
+
+model GreenhousePayRange {
+  id            Int            @id @default(autoincrement())
+  jobId         Int?           @unique
+  job           GreenhouseJob? @relation
+  min_cents     Float
+  max_cents     Float
+  currency_code String
+  title         String
+  blurb         String
+}
+
+model GreenhouseQuestion {
+  id          Int            @id @default(autoincrement())
+  jobId       Int
+  job         GreenhouseJob  @relation(name: "JobQuestions", fields: [jobId], references: [id])
+  locationJob GreenhouseJob? @relation(name: "JobLocationQuestions", fields: [jobId], references: [id], map: "GreenhouseQuestion_locationJob_fkey")
+  label       String
+  required    Boolean
+  fields      Json
+}
