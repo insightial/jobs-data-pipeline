@@ -9,5 +9,8 @@
     "clean": "rm -rf ./dist",
     "watch": "tsc -w"
   },
+  "dependencies": {
+    "@insightial/job-prisma-schema": "*"
+  },
   "main": "dist/index.js"
 }

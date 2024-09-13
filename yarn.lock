@@ -725,6 +725,22 @@ __metadata:
 "@insightial/job-types@npm:*, @insightial/job-types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@insightial/job-types@workspace:packages/types"
+  dependencies:
+    "@insightial/job-prisma-schema": "npm:*"
+  languageName: unknown
+  linkType: soft
+
+"@insightial/jobboards-connector@workspace:connectors/jobboards":
+  version: 0.0.0-use.local
+  resolution: "@insightial/jobboards-connector@workspace:connectors/jobboards"
+  dependencies:
+    "@insightial/job-aws": "npm:*"
+    "@insightial/job-prisma-schema": "npm:*"
+    "@insightial/job-types": "npm:*"
+    "@types/node": "npm:^22.5.4"
+    aws-sdk: "npm:^2.1688.0"
+    date-fns: "npm:^3.6.0"
+    esbuild: "npm:^0.23.1"
   languageName: unknown
   linkType: soft
 
