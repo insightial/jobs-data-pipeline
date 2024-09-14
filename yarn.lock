@@ -703,6 +703,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@insightial/get-jobboards-scheduler@workspace:connectors/schedule-get-jobboards":
+  version: 0.0.0-use.local
+  resolution: "@insightial/get-jobboards-scheduler@workspace:connectors/schedule-get-jobboards"
+  dependencies:
+    "@insightial/job-aws": "npm:*"
+    "@insightial/job-types": "npm:*"
+    "@types/node": "npm:^22.5.4"
+    aws-sdk: "npm:^2.1688.0"
+    esbuild: "npm:^0.23.1"
+  languageName: unknown
+  linkType: soft
+
 "@insightial/job-aws@npm:*, @insightial/job-aws@workspace:packages/aws":
   version: 0.0.0-use.local
   resolution: "@insightial/job-aws@workspace:packages/aws"
@@ -725,6 +737,23 @@ __metadata:
 "@insightial/job-types@npm:*, @insightial/job-types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@insightial/job-types@workspace:packages/types"
+  dependencies:
+    "@insightial/job-prisma-schema": "npm:*"
+  languageName: unknown
+  linkType: soft
+
+"@insightial/jobboards-connector@workspace:connectors/get-jobboards":
+  version: 0.0.0-use.local
+  resolution: "@insightial/jobboards-connector@workspace:connectors/get-jobboards"
+  dependencies:
+    "@insightial/job-aws": "npm:*"
+    "@insightial/job-prisma-schema": "npm:*"
+    "@insightial/job-types": "npm:*"
+    "@types/node": "npm:^22.5.4"
+    aws-lambda: "npm:^1.0.7"
+    aws-sdk: "npm:^2.1688.0"
+    date-fns: "npm:^3.6.0"
+    esbuild: "npm:^0.23.1"
   languageName: unknown
   linkType: soft
 

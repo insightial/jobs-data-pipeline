@@ -24,3 +24,160 @@ model JobBoard {
 
   @@id([provider, name])
 }
+
+model GreenhouseOffice {
+  id       BigInt  @id
+  name     String
+  location String?
+
+  child_ids GreenhouseOffice[] @relation("children")
+  parent    GreenhouseOffice?  @relation("children", fields: [parent_id], references: [id])
+  parent_id BigInt?
+
+  // explicit join table for departments
+  departmentOffices GreenhouseDepartmentOffice[]
+
+  // explicit join table for jobs
+  jobOffices GreenhouseJobOffice[]
+}
+
+model GreenhouseDepartment {
+  id   BigInt @id
+  name String
+
+  child_ids GreenhouseDepartment[] @relation("children")
+  parent    GreenhouseDepartment?  @relation("children", fields: [parent_id], references: [id])
+  parent_id BigInt?
+
+  // explicit join table for offices
+  departmentOffices GreenhouseDepartmentOffice[]
+
+  // explicit join table for jobs
+  jobDepartments GreenhouseJobDepartment[]
+}
+
+model GreenhouseJob {
+  id              BigInt              @id
+  title           String
+  updated_at      DateTime
+  absolute_url    String
+  internal_job_id BigInt?
+  location        GreenhouseLocation? @relation(fields: [locationId], references: [id])
+  locationId      Int?
+
+  questions          GreenhouseQuestion[] @relation("JobQuestions")
+  location_questions GreenhouseQuestion[] @relation("JobLocationQuestions")
+  pay_input_range_id Int?                 @unique
+  pay_input_ranges   GreenhousePayRange?  @relation(fields: [pay_input_range_id], references: [id])
+  metadata           Json?
+  data_compliance    Json?
+  content            String
+  board              String
+
+  // explicit join tables for departments and offices
+  jobDepartments GreenhouseJobDepartment[]
+  jobOffices     GreenhouseJobOffice[]
+}
+
+model GreenhouseLocation {
+  id   Int             @id @default(autoincrement())
+  job  GreenhouseJob[]
+  name String          @unique
+}
+
+model GreenhousePayRange {
+  id            Int            @id @default(autoincrement())
+  jobId         BigInt?        @unique
+  job           GreenhouseJob? @relation
+  min_cents     Float
+  max_cents     Float
+  currency_code String
+  title         String
+  blurb         String
+}
+
+model GreenhouseQuestion {
+  jobId       BigInt
+  job         GreenhouseJob  @relation(name: "JobQuestions", fields: [jobId], references: [id])
+  locationJob GreenhouseJob? @relation(name: "JobLocationQuestions", fields: [jobId], references: [id], map: "GreenhouseQuestion_locationJob_fkey")
+  label       String
+  required    Boolean
+  fields      Json
+
+  @@unique([jobId, label])
+}
+
+model GreenhouseJobDepartment {
+  jobId        BigInt
+  departmentId BigInt
+
+  job        GreenhouseJob        @relation(fields: [jobId], references: [id])
+  department GreenhouseDepartment @relation(fields: [departmentId], references: [id])
+
+  @@id([jobId, departmentId])
+}
+
+model GreenhouseJobOffice {
+  jobId    BigInt
+  officeId BigInt
+
+  job    GreenhouseJob    @relation(fields: [jobId], references: [id])
+  office GreenhouseOffice @relation(fields: [officeId], references: [id])
+
+  @@id([jobId, officeId])
+}
+
+model GreenhouseDepartmentOffice {
+  departmentId BigInt
+  officeId     BigInt
+
+  department GreenhouseDepartment @relation(fields: [departmentId], references: [id])
+  office     GreenhouseOffice     @relation(fields: [officeId], references: [id])
+
+  @@id([departmentId, officeId])
+}
+
+model LeverJob {
+  id                     String         @id
+  board                  String
+  text                   String
+  country                String?
+  opening                String?
+  openingPlain           String?
+  description            String?
+  descriptionPlain       String?
+  descriptionBody        String?
+  descriptionBodyPlain   String?
+  additional             String?
+  additionalPlain        String?
+  hostedUrl              String?
+  applyUrl               String?
+  workplaceType          WorkplaceType?
+  salaryDescription      String?
+  salaryDescriptionPlain String?
+  location               String?
+  commitment             String?
+  team                   String?
+  department             String?
+  allLocations           String[]
+  salaryRangeCurrency    String?
+  salaryRangeInterval    String?
+  salaryRangeMin         Float?
+  salaryRangeMax         Float?
+  lists                  LeverJobList[]
+}
+
+model LeverJobList {
+  id      Int      @id @default(autoincrement())
+  jobId   String
+  job     LeverJob @relation(fields: [jobId], references: [id])
+  text    String
+  content String
+}
+
+enum WorkplaceType {
+  unspecified
+  on_site     @map("on-site")
+  remote
+  hybrid
+}

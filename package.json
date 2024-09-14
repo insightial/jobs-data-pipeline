@@ -15,13 +15,17 @@
   },
   "workspaces": [
     "ingestion/*",
-    "packages/*"
+    "packages/*",
+    "connectors/*"
   ],
   "scripts": {
     "setup": "yarn workspaces foreach --all install",
     "setup:ingestion": "yarn workspaces foreach --all --include \"ingestion/*\" run setup",
     "build:ingestion": "yarn workspaces foreach --all --include \"ingestion/*\" run build",
     "deploy:ingestion": "yarn workspaces foreach --all --include \"ingestion/*\" run deploy",
+    "setup:connectors": "yarn workspaces foreach --all --include \"connectors/*\" run setup",
+    "build:connectors": "yarn workspaces foreach --all --include \"connectors/*\" run build",
+    "deploy:connectors": "yarn workspaces foreach --all --include \"connectors/*\" run deploy",
     "generate:prisma": "yarn workspace @insightial/job-prisma-schema generate",
     "build:prisma": "yarn workspace @insightial/job-prisma-schema build",
     "build:packages": "yarn workspaces foreach --all --include \"packages/*\" run build"
