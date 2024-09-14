@@ -1,11 +1,14 @@
-// src/jobBoardSync.ts
 import { SQS } from "aws-sdk";
 import prisma from "@insightial/job-prisma-schema";
 import { JobBoard } from "@prisma/client";
+import { getPrismaDatabaseUrl } from "@insightial/job-prisma-schema/utils/awsConfig";
 
 const sqs = new SQS();
 
 export const handler = async () => {
+  const databaseUrl = await getPrismaDatabaseUrl();
+  process.env.DATABASE_URL = databaseUrl;
+
   // Fetch the SQS queue URL from environment variables
   const queueUrl = process.env.SQS_QUEUE_URL;
 
@@ -25,8 +28,10 @@ export const handler = async () => {
     for (let i = 0; i < totalMessages; i += batchSize) {
       const batchItems = jobBoards.slice(i, i + batchSize);
 
+      const batchNumber = Math.floor(i / batchSize);
+
       const entries = batchItems.map((jobBoard, index) => ({
-        Id: `${jobBoard.provider}-${jobBoard.name}-${index}`, // Unique within the batch
+        Id: `msg_${batchNumber}_${index}`, // Allowed characters and unique within the batch
         MessageBody: JSON.stringify({
           jobBoard: jobBoard.name,
           board: jobBoard.provider,
