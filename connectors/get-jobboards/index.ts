@@ -3,24 +3,25 @@ import { syncGreenhouseJobs } from "./greenhouse";
 import { syncLeverJobs } from "./lever";
 import { getPrismaDatabaseUrl } from "@insightial/job-prisma-schema/utils/awsConfig";
 
-export const handler = async (event) => {
+export const handler = async (event: SQSEvent) => {
   const databaseUrl = await getPrismaDatabaseUrl();
   process.env.DATABASE_URL = databaseUrl;
 
   try {
-    // Iterate over each SQS message
-    for (const record of event.Records) {
-      const messageBody = JSON.parse(record.body);
+    // Process all records in parallel
+    await Promise.all(
+      event.Records.map(async (record) => {
+        const messageBody = JSON.parse(record.body);
+        const { jobBoard, board } = messageBody;
 
-      const { jobBoard, board } = messageBody;
-
-      // Fetch job board results based on the message content
-      if (board === "greenhouse") {
-        const _ = await syncGreenhouseJobs(jobBoard);
-      } else if (board === "lever") {
-        const _ = await syncLeverJobs(jobBoard);
-      }
-    }
+        // Fetch job board results based on the message content
+        if (board === "greenhouse") {
+          await syncGreenhouseJobs(jobBoard);
+        } else if (board === "lever") {
+          await syncLeverJobs(jobBoard);
+        }
+      })
+    );
 
     return {
       statusCode: 200,
