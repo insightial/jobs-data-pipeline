@@ -1,5 +1,6 @@
 import { SQSEvent } from "aws-lambda";
 import { syncGreenhouseJobs } from "./greenhouse";
+import { syncLeverJobs } from "./lever";
 import { getPrismaDatabaseUrl } from "@insightial/job-prisma-schema/utils/awsConfig";
 
 export const handler = async (event) => {
@@ -11,10 +12,14 @@ export const handler = async (event) => {
     for (const record of event.Records) {
       const messageBody = JSON.parse(record.body);
 
-      const { jobBoard } = messageBody;
+      const { jobBoard, board } = messageBody;
 
       // Fetch job board results based on the message content
-      const results = await syncGreenhouseJobs(jobBoard);
+      if (board === "greenhouse") {
+        const _ = await syncGreenhouseJobs(jobBoard);
+      } else if (board === "lever") {
+        const _ = await syncLeverJobs(jobBoard);
+      }
     }
 
     return {
@@ -38,7 +43,8 @@ const dummyEvent: SQSEvent = {
       messageId: "123",
       receiptHandle: "456",
       body: JSON.stringify({
-        jobBoard: "1021creative",
+        jobBoard: "askfavor",
+        board: "lever",
       }),
       attributes: {
         ApproximateReceiveCount: "1",

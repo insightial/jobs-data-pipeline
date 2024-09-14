@@ -136,3 +136,48 @@ model GreenhouseDepartmentOffice {
 
   @@id([departmentId, officeId])
 }
+
+model LeverJob {
+  id                     String         @id
+  board                  String
+  text                   String
+  country                String?
+  opening                String?
+  openingPlain           String?
+  description            String?
+  descriptionPlain       String?
+  descriptionBody        String?
+  descriptionBodyPlain   String?
+  additional             String?
+  additionalPlain        String?
+  hostedUrl              String?
+  applyUrl               String?
+  workplaceType          WorkplaceType?
+  salaryDescription      String?
+  salaryDescriptionPlain String?
+  location               String?
+  commitment             String?
+  team                   String?
+  department             String?
+  allLocations           String[]
+  salaryRangeCurrency    String?
+  salaryRangeInterval    String?
+  salaryRangeMin         Float?
+  salaryRangeMax         Float?
+  lists                  LeverJobList[]
+}
+
+model LeverJobList {
+  id      Int      @id @default(autoincrement())
+  jobId   String
+  job     LeverJob @relation(fields: [jobId], references: [id])
+  text    String
+  content String
+}
+
+enum WorkplaceType {
+  unspecified
+  on_site     @map("on-site")
+  remote
+  hybrid
+}
