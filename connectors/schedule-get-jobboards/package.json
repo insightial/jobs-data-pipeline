@@ -1,5 +1,5 @@
 {
-  "name": "@insightial/jobboards-connector",
+  "name": "@insightial/get-jobboards-scheduler",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -13,11 +13,8 @@
   },
   "dependencies": {
     "@insightial/job-aws": "*",
-    "@insightial/job-prisma-schema": "*",
     "@insightial/job-types": "*",
-    "aws-lambda": "^1.0.7",
-    "aws-sdk": "^2.1688.0",
-    "date-fns": "^3.6.0"
+    "aws-sdk": "^2.1688.0"
   },
   "devDependencies": {
     "@types/node": "^22.5.4",
